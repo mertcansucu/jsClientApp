@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="getProducts()"> Get Products</button>
+
+    <div id="divProducts">
+        <!--bu bilgileri js ile çekip doldurucam
+        <div>
+            <h5>productName</h5>
+            <p>price</p>
+        </div>
+        -->
+    </div>
+
+    <script>
+        const getProducts = async () =>{
+            const response = await fetch("http://localhost:5177/api/products");//fetch bir js apisidir ve ben const response ile bu cevapları alıcam
+            const products = response.json();//cevabı json veri türüne döndürdüm
+
+            displayProducts(products);//metodu çağırdım,metodun görevi bilgileri sayfada yazdırmak
+        }
+
+        const displayProducts = (products) => {
+            const parent = document.getElementById("divProducts");//<div id="divProducts"></div>div e ulaştım
+
+            products.forEach(element => {
+                parent.innerHTML += `
+                    <div>
+                        <h5>${prd.productName}</h5>
+                        <p>${prd.price}</p>
+                    </div>
+                `;
+            });
+        }
+        
+        /*const fonksiyon tanımlamadır function şeklinde tanımlama şekli:
+        function displayProducts(products){
+            
+        }
+        */
+
+
+    </script>
+</body>
+</html>
