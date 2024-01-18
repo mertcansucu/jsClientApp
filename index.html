@@ -20,15 +20,15 @@
     <script>
         const getProducts = async () =>{
             const response = await fetch("http://localhost:5177/api/products");//fetch bir js apisidir ve ben const response ile bu cevapları alıcam
-            const products = response.json();//cevabı json veri türüne döndürdüm
-
+            const products = await response.json();//cevabı json veri türüne döndürdüm
+            console.log(products);
             displayProducts(products);//metodu çağırdım,metodun görevi bilgileri sayfada yazdırmak
         }
 
         const displayProducts = (products) => {
             const parent = document.getElementById("divProducts");//<div id="divProducts"></div>div e ulaştım
 
-            products.forEach(element => {
+            products.forEach(prd => {
                 parent.innerHTML += `
                     <div>
                         <h5>${prd.productName}</h5>
