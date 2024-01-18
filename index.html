@@ -7,6 +7,8 @@
 </head>
 <body>
     <button onclick="getProducts()"> Get Products</button>
+    <button onclick="getProductById()"> Get Product</button>
+    <button onclick="login()"> Login</button>
 
     <div id="divProducts">
         <!--bu bilgileri js ile çekip doldurucam
@@ -18,6 +20,18 @@
     </div>
 
     <script>
+        const login = async () => {
+            const response = await fetch("http://localhost:5177/api/users/login", {
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+                body: JSON.stringify({ email: 'mrtcnscc@gmail.com', password: '1234'})
+            });
+            const result = await response.json();
+            localStorage.setItem("token", JSON.stringify(result.token));//token bilgisini kaydettim
+        }
         const getProducts = async () =>{
             const response = await fetch("http://localhost:5177/api/products");//fetch bir js apisidir ve ben const response ile bu cevapları alıcam
             const products = await response.json();//cevabı json veri türüne döndürdüm
@@ -25,6 +39,27 @@
             displayProducts(products);//metodu çağırdım,metodun görevi bilgileri sayfada yazdırmak
         }
 
+        const getProductById = async () => {
+            const token = JSON.parse(localStorage.getItem("token"));//token bilgisini aldım
+            const response = await fetch("http://localhost:5177/api/products/4", {
+                headers: { Authorization: `Bearer ${token}`}
+            });
+            const product = await response.json();
+            displayProduct(product);
+        }
+
+        const displayProduct = (product) => {
+            const parent = document.getElementById("divProducts");
+
+            parent.innerHTML = `
+                <div>
+                    <h5>${product.productName}</h5>
+                    <p>${product.price}</p>
+                </div>
+            `;
+
+        }
+        
         const displayProducts = (products) => {
             const parent = document.getElementById("divProducts");//<div id="divProducts"></div>div e ulaştım
 
